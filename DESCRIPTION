@@ -1,0 +1,18 @@
+Package: sharepointr
+Title: sharepointr: Upload and Download files from SharePoint
+Version: 0.0.0.1
+Authors@R: 
+    person(given = "Esben",
+           family = "Eickhardt",
+           role = c("aut", "cre"),
+           email = "esbeneickhardt@gmail.com")
+Description: sharepointr: Upload and Download files from SharePoint
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Suggests: knitr, rmarkdown
+VignetteBuilder: knitr
+Imports:
+	httr,
+	jsonlite
