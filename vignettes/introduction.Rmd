@@ -63,6 +63,13 @@ Bearer realm="tenant ID"
 client_id="resource"
 
 ## Using the package
+### Installation  
+
+```{r, eval=FALSE, tidy=T}
+install.packages("devtools")
+devtools::install_github("esbeneickhardt/sharepointr")
+```
+
 ### Parameters
   
 ```{r, eval=FALSE, tidy=T}
