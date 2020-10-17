@@ -32,3 +32,6 @@ download_sharepoint_file(
 \description{
 Download a File from SharePoint
 }
+\examples{
+#no example yet
+}
