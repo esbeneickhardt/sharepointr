@@ -35,6 +35,8 @@ get_sharepoint_token <- function(client_id, client_secret, tenant_id, resource_i
 #' @param sharepoint_token A SharePoint token from get_sharepoint_token()
 #' @param sharepoint_url A SharePoint url, e.g. kksky.sharepoint.com
 #'
+#' @importFrom utils URLencode
+#'
 #' @return
 #' @export
 #'
@@ -65,6 +67,7 @@ get_sharepoint_digest_value <- function(sharepoint_token, sharepoint_url) {
 #' @param out_path Local path to write file to, e.g. C:/Dokument.docx
 #'
 #' @importFrom httr add_headers GET content
+#' @importFrom utils URLencode
 #'
 #' @return
 #' @export
@@ -97,6 +100,7 @@ download_sharepoint_file <- function(sharepoint_token, sharepoint_url, sharepoin
 #' @param file_path Path to the file you want to upload, e.g. C:/Dokument.docx
 #'
 #' @importFrom httr upload_file POST add_headers
+#' @importFrom utils URLencode
 #' @return
 #' @export
 #'
