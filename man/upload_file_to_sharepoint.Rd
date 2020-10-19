@@ -32,3 +32,6 @@ upload_file_to_sharepoint(
 \description{
 Upload a File to SharePoint
 }
+\examples{
+#no example yet
+}

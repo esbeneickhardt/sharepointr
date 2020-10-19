@@ -67,6 +67,7 @@ client_id="resource"
 
 ```{r, eval=FALSE, tidy=T}
 install.packages("devtools")
+library(devtools)
 devtools::install_github("esbeneickhardt/sharepointr")
 ```
 

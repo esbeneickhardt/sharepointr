@@ -29,3 +29,6 @@ A Token that can be used for calling the SharePoint API
 \description{
 Generate a SharePoint Token
 }
+\examples{
+#no example yet
+}

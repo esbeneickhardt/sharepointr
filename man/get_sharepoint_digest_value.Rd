@@ -17,3 +17,6 @@ get_sharepoint_digest_value(sharepoint_token, sharepoint_url)
 \description{
 Generate a Digest Value
 }
+\examples{
+#no example yet
+}
