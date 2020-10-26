@@ -87,7 +87,7 @@ out_path <- "C:/Users/User/Desktop/"
 download_sharepoint_file(sharepoint_token, sharepoint_url, sharepoint_digest_value, sharepoint_path, sharepoint_file_name, out_path)
 ```
 
-### Downloading a file from sharepoint with custom name
+### Downloading a file from sharepoint with custom filename
   
 ```{r, eval=FALSE, tidy=T}
 sharepoint_path <- "Shared Documents/test"
