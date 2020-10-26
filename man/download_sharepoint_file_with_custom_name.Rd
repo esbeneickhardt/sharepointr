@@ -10,7 +10,7 @@ download_sharepoint_file_with_custom_name(
   sharepoint_digest_value,
   sharepoint_path,
   sharepoint_file_name,
-  output_path,
+  out_path,
   out_file
 )
 }
@@ -25,9 +25,9 @@ download_sharepoint_file_with_custom_name(
 
 \item{sharepoint_file_name}{Name of the file to download, e.g. Dokument.docx}
 
-\item{out_file}{Filename of output file, e.g. Document_custom_name.docx}
-
 \item{out_path}{Local path to write file to, e.g. C:/Dokuments}
+
+\item{out_file}{Filename of output file, e.g. Document_custom_name.docx}
 }
 \value{
 

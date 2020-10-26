@@ -105,7 +105,7 @@ download_sharepoint_file <- function(sharepoint_token, sharepoint_url, sharepoin
 #' @export
 #'
 #' @examples #no example yet
-download_sharepoint_file_with_custom_name <- function(sharepoint_token, sharepoint_url, sharepoint_digest_value, sharepoint_path, sharepoint_file_name, output_path, out_file) {
+download_sharepoint_file_with_custom_name <- function(sharepoint_token, sharepoint_url, sharepoint_digest_value, sharepoint_path, sharepoint_file_name, out_path, out_file) {
 
   # Preparing call
   url <- utils::URLencode(paste0(sharepoint_url, "/_api/web/GetFolderByServerRelativeUrl('", sharepoint_path, "')", "/Files('", sharepoint_file_name, "')/$value"))
