@@ -64,7 +64,7 @@ get_sharepoint_digest_value <- function(sharepoint_token, sharepoint_url) {
 #' @param sharepoint_digest_value A SharePoint digest value from get_sharepoint_digest_value()
 #' @param sharepoint_path Path to the file, e.g. Shared Documents/test
 #' @param sharepoint_file_name Name of the file to download, e.g. Dokument.docx
-#' @param out_path Local path to write file to, e.g. C:/Dokument.docx
+#' @param out_path Local path to write file to, e.g. C:/Dokuments
 #'
 #' @importFrom httr add_headers GET content
 #' @importFrom utils URLencode
@@ -88,6 +88,31 @@ download_sharepoint_file <- function(sharepoint_token, sharepoint_url, sharepoin
   writeBin(httr::content(my_content), paste0(out_path, "/", sharepoint_file_name))
 }
 
+#' Download a File from SharePoint
+#'
+#' @inheritParams download_sharepoint_file
+#' @param out_file filename to output to
+#' @importFrom httr add_headers GET content
+#' @importFrom utils URLencode
+#'
+#' @return
+#' @export
+#'
+#' @examples #no example yet
+download_sharepoint_file_with_custom_name <- function(sharepoint_token, sharepoint_url, sharepoint_digest_value, sharepoint_path, sharepoint_file_name, out_file) {
+
+  # Preparing call
+  url <- utils::URLencode(paste0(sharepoint_url, "/_api/web/GetFolderByServerRelativeUrl('", sharepoint_path, "')", "/Files('", sharepoint_file_name, "')/$value"))
+  headers <- httr::add_headers("Accept" = "application/json;odata=verbose",
+                               "Authorization" = paste0("Bearer ", sharepoint_token),
+                               "X-RequestDigest" = sharepoint_digest_value)
+
+  # Making call
+  my_content <- httr::GET(url = url, headers)
+
+  # Writing content to file
+  writeBin(httr::content(my_content), out_file)
+}
 
 #(ads)import httr would be fine too. Importing only function in use reduces namespace collisions.
 #' Upload a File to SharePoint
