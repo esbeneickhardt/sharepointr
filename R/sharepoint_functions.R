@@ -90,8 +90,14 @@ download_sharepoint_file <- function(sharepoint_token, sharepoint_url, sharepoin
 
 #' Download a File from SharePoint and output to custom filename
 #'
-#' @inheritParams download_sharepoint_file
-#' @param out_file Filename of output file, e.g. Document.docx
+#' @param sharepoint_token A SharePoint token from get_sharepoint_token()
+#' @param sharepoint_url A SharePoint url, e.g. kksky.sharepoint.com
+#' @param sharepoint_digest_value A SharePoint digest value from get_sharepoint_digest_value()
+#' @param sharepoint_path Path to the file, e.g. Shared Documents/test
+#' @param sharepoint_file_name Name of the file to download, e.g. Dokument.docx
+#' @param out_path Local path to write file to, e.g. C:/Dokuments
+#' @param out_file Filename of output file, e.g. Document_custom_name.docx
+#'
 #' @importFrom httr add_headers GET content
 #' @importFrom utils URLencode
 #'
