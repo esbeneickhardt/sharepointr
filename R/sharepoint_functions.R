@@ -88,10 +88,10 @@ download_sharepoint_file <- function(sharepoint_token, sharepoint_url, sharepoin
   writeBin(httr::content(my_content), paste0(out_path, "/", sharepoint_file_name))
 }
 
-#' Download a File from SharePoint
+#' Download a File from SharePoint and output to custom filename
 #'
 #' @inheritParams download_sharepoint_file
-#' @param out_file filename to output to
+#' @param out_file Filename of output file, e.g. Document.docx
 #' @importFrom httr add_headers GET content
 #' @importFrom utils URLencode
 #'
@@ -99,7 +99,7 @@ download_sharepoint_file <- function(sharepoint_token, sharepoint_url, sharepoin
 #' @export
 #'
 #' @examples #no example yet
-download_sharepoint_file_with_custom_name <- function(sharepoint_token, sharepoint_url, sharepoint_digest_value, sharepoint_path, sharepoint_file_name, out_file) {
+download_sharepoint_file_with_custom_name <- function(sharepoint_token, sharepoint_url, sharepoint_digest_value, sharepoint_path, sharepoint_file_name, output_path, out_file) {
 
   # Preparing call
   url <- utils::URLencode(paste0(sharepoint_url, "/_api/web/GetFolderByServerRelativeUrl('", sharepoint_path, "')", "/Files('", sharepoint_file_name, "')/$value"))
@@ -111,7 +111,7 @@ download_sharepoint_file_with_custom_name <- function(sharepoint_token, sharepoi
   my_content <- httr::GET(url = url, headers)
 
   # Writing content to file
-  writeBin(httr::content(my_content), out_file)
+  writeBin(httr::content(my_content), paste0(out_path, "/", out_file))
 }
 
 #(ads)import httr would be fine too. Importing only function in use reduces namespace collisions.
