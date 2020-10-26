@@ -87,6 +87,16 @@ out_path <- "C:/Users/User/Desktop/"
 download_sharepoint_file(sharepoint_token, sharepoint_url, sharepoint_digest_value, sharepoint_path, sharepoint_file_name, out_path)
 ```
 
+### Downloading a file from sharepoint with custom name
+  
+```{r, eval=FALSE, tidy=T}
+sharepoint_path <- "Shared Documents/test"
+sharepoint_file_name <- "Mappe.xlsx"
+out_path <- "C:/Users/User/Desktop/"
+output_file <- "MyCustomFileName.xlsx"
+download_sharepoint_file_with_custom_name(sharepoint_token, sharepoint_url, sharepoint_digest_value, sharepoint_path, sharepoint_file_name, out_path, output_file)
+```
+
 ### Uploading a file to sharepoint
   
 ```{r, eval=FALSE, tidy=T}
