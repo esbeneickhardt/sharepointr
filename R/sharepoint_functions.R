@@ -153,3 +153,53 @@ upload_file_to_sharepoint <- function(sharepoint_token, sharepoint_url, sharepoi
   # Making call
   my_content <- httr::POST(url = url, body = body, headers)
 }
+
+#' Get list of folders
+#'
+#' @inheritParams download_sharepoint_file
+#' @importFrom httr add_headers GET content
+#' @importFrom utils URLencode
+#'
+#' @return character vector of folder names
+#' @export
+#'
+#' @examples #no example yet
+get_sharepoint_folder_names <- function(sharepoint_token, sharepoint_url, sharepoint_digest_value, sharepoint_path) {
+
+  # Preparing call
+  url <- utils::URLencode(paste0(sharepoint_url, "/_api/web/GetFolderByServerRelativeUrl('", sharepoint_path, "')/Folders"))
+  headers <- httr::add_headers("Accept" = "application/json;odata=verbose",
+                               "Authorization" = paste0("Bearer ", sharepoint_token),
+                               "X-RequestDigest" = sharepoint_digest_value)
+
+  # Making call
+  my_content <- httr::content(httr::GET(url = url, headers))
+  if (length(my_content$d$results) == 0) return(NULL)
+  folders <- purrr::map_depth(my_content, 3, function(x) x[["ServerRelativeUrl"]])
+  urls <- unlist(folders)
+  folder_names <- purrr::map_chr(stringr::str_split(urls, "/"), length(stringr::str_split(urls, "/")[[1]]))
+  folder_names <- folder_names[folder_names != "Forms"]
+  folder_names
+}
+
+#' Get list of file names
+#'
+#' @inheritParams download_sharepoint_file
+#'
+#' @return character vector of file names
+#' @export
+#'
+#' @examples #no example yet
+get_sharepoint_file_names <- function(sharepoint_token, sharepoint_url, sharepoint_digest_value, sharepoint_path) {
+
+  # Preparing call
+  url <- utils::URLencode(paste0(sharepoint_url, "/_api/web/GetFolderByServerRelativeUrl('", sharepoint_path, "')/Files"))
+  headers <- httr::add_headers("Accept" = "application/json;odata=verbose",
+                               "Authorization" = paste0("Bearer ", sharepoint_token),
+                               "X-RequestDigest" = sharepoint_digest_value)
+
+  # Making call
+  my_content <- httr::content(httr::GET(url = url, headers))
+  file_names <- purrr:::map_depth(my_content, 3 , function(x) x[["Name"]]) %>% unlist() %>% unname()
+  file_names
+}
