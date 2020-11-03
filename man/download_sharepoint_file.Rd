@@ -24,7 +24,7 @@ download_sharepoint_file(
 
 \item{sharepoint_file_name}{Name of the file to download, e.g. Dokument.docx}
 
-\item{out_path}{Local path to write file to, e.g. C:/Dokument.docx}
+\item{out_path}{Local path to write file to, e.g. C:/Dokuments}
 }
 \value{
 
