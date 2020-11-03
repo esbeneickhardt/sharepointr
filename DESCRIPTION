@@ -13,4 +13,9 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Suggests: knitr, rmarkdown, formatR
 VignetteBuilder: knitr
-Imports: httr, jsonlite, utils
+Imports: 
+    httr,
+    jsonlite,
+    utils,
+    purrr,
+    stringr
