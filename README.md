@@ -105,3 +105,17 @@ sharepoint_file_name <- "Test.xlsx"
 file_path <- "C:/Users/User/Desktop/Test.xlsx"
 upload_file_to_sharepoint(sharepoint_token, sharepoint_url, sharepoint_digest_value, sharepoint_path, sharepoint_file_name, file_path)
 ```
+
+### Listing files in a sharepoint
+  
+```{r, eval=FALSE, tidy=T}
+sharepoint_path <- "Shared Documents/test"
+get_sharepoint_file_names(sharepoint_token, sharepoint_url, sharepoint_digest_value, sharepoint_path)
+```
+
+### Listing folders in a sharepoint
+  
+```{r, eval=FALSE, tidy=T}
+sharepoint_path <- "Shared Documents/test"
+get_sharepoint_folder_names(sharepoint_token, sharepoint_url, sharepoint_digest_value, sharepoint_path)
+```

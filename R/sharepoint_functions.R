@@ -120,7 +120,6 @@ download_sharepoint_file_with_custom_name <- function(sharepoint_token, sharepoi
   writeBin(httr::content(my_content), paste0(out_path, "/", out_file))
 }
 
-#(ads)import httr would be fine too. Importing only function in use reduces namespace collisions.
 #' Upload a File to SharePoint
 #'
 #' @param sharepoint_token A SharePoint token from get_sharepoint_token()
@@ -137,17 +136,10 @@ download_sharepoint_file_with_custom_name <- function(sharepoint_token, sharepoi
 #'
 #' @examples #no example yet
 upload_file_to_sharepoint <- function(sharepoint_token, sharepoint_url, sharepoint_digest_value, sharepoint_path, sharepoint_file_name, file_path) {
-
-
-  #Bonus info: if ever uploading to CRAN, they may as pedantic to require you to specify any dependency not base
-  #utils, graphics, stats etc. are not base, but always provided in virtually any distribution and you don't have to load them
   # Prepare call
   url <- utils::URLencode(paste0(sharepoint_url, "/_api/web/GetFolderByServerRelativeUrl('", sharepoint_path, "')", "/Files/Add(url='", sharepoint_file_name, "',overwrite=true)"))
   headers <- httr::add_headers("Authorization" = paste0("Bearer ", sharepoint_token),
                          "X-RequestDigest" = sharepoint_digest_value)
-  #it can be a good investment to literally mention any foreign package
-  #it eases to read the source code for the first time
-  #the risk of a namespace collisions, leading to weird bugs is reduced
   body <- httr::upload_file(file_path)
 
   # Making call
@@ -156,7 +148,11 @@ upload_file_to_sharepoint <- function(sharepoint_token, sharepoint_url, sharepoi
 
 #' Get list of folders
 #'
-#' @inheritParams download_sharepoint_file
+#' @param sharepoint_token A SharePoint token from get_sharepoint_token()
+#' @param sharepoint_url A SharePoint url, e.g. kksky.sharepoint.com
+#' @param sharepoint_digest_value A SharePoint digest value from get_sharepoint_digest_value()
+#' @param sharepoint_path Path to the file, e.g. Shared Documents/test
+#'
 #' @importFrom httr add_headers GET content
 #' @importFrom utils URLencode
 #'
@@ -165,7 +161,6 @@ upload_file_to_sharepoint <- function(sharepoint_token, sharepoint_url, sharepoi
 #'
 #' @examples #no example yet
 get_sharepoint_folder_names <- function(sharepoint_token, sharepoint_url, sharepoint_digest_value, sharepoint_path) {
-
   # Preparing call
   url <- utils::URLencode(paste0(sharepoint_url, "/_api/web/GetFolderByServerRelativeUrl('", sharepoint_path, "')/Folders"))
   headers <- httr::add_headers("Accept" = "application/json;odata=verbose",
@@ -174,17 +169,25 @@ get_sharepoint_folder_names <- function(sharepoint_token, sharepoint_url, sharep
 
   # Making call
   my_content <- httr::content(httr::GET(url = url, headers))
-  if (length(my_content$d$results) == 0) return(NULL)
+  
+  # Returning vector with folder names
+  if (length(my_content$d$results) == 0) {
+    return(NULL)
+  }
   folders <- purrr::map_depth(my_content, 3, function(x) x[["ServerRelativeUrl"]])
   urls <- unlist(folders)
   folder_names <- purrr::map_chr(stringr::str_split(urls, "/"), length(stringr::str_split(urls, "/")[[1]]))
   folder_names <- folder_names[folder_names != "Forms"]
-  folder_names
+  
+  return(folder_names)
 }
 
 #' Get list of file names
 #'
-#' @inheritParams download_sharepoint_file
+#' @param sharepoint_token A SharePoint token from get_sharepoint_token()
+#' @param sharepoint_url A SharePoint url, e.g. kksky.sharepoint.com
+#' @param sharepoint_digest_value A SharePoint digest value from get_sharepoint_digest_value()
+#' @param sharepoint_path Path to the file, e.g. Shared Documents/test
 #'
 #' @return character vector of file names
 #' @export
@@ -201,5 +204,6 @@ get_sharepoint_file_names <- function(sharepoint_token, sharepoint_url, sharepoi
   # Making call
   my_content <- httr::content(httr::GET(url = url, headers))
   file_names <- purrr:::map_depth(my_content, 3 , function(x) x[["Name"]]) %>% unlist() %>% unname()
-  file_names
+  
+  return(file_names)
 }
