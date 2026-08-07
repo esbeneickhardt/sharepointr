@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 220" font-family="-apple-system,Segoe UI,Helvetica,Arial,sans-serif">
+  <defs>
+    <marker id="arrow-ud" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" class="arrow-fill" />
+    </marker>
+  </defs>
+  <style>
+    .box { fill: #eef4fc; stroke: #0f6cbd; stroke-width: 1.5; }
+    .box-alt { fill: #eafcfb; stroke: #0f9b8e; stroke-width: 1.5; }
+    .label { fill: #1b1f2a; font-size: 16px; font-weight: 600; text-anchor: middle; }
+    .sub { fill: #46505c; font-size: 12.5px; text-anchor: middle; }
+    .edge { stroke: #6b7684; stroke-width: 2; fill: none; }
+    .edge-label { fill: #46505c; font-size: 12px; text-anchor: middle; }
+    .arrow-fill { fill: #6b7684; }
+    @media (prefers-color-scheme: dark) {
+      .box { fill: #12263b; stroke: #50e6ff; }
+      .box-alt { fill: #0f2b28; stroke: #3ddbc9; }
+      .label { fill: #e6e8f0; }
+      .sub { fill: #aab2bf; }
+      .edge { stroke: #8892a0; }
+      .edge-label { fill: #aab2bf; }
+      .arrow-fill { fill: #8892a0; }
+    }
+  </style>
+
+  <rect x="10" y="65" width="180" height="90" rx="12" class="box" />
+  <text x="100" y="100" class="label">Local file</text>
+  <text x="100" y="122" class="sub">local_path / dest</text>
+
+  <rect x="360" y="10" width="220" height="200" rx="14" class="box-alt" />
+  <text x="470" y="45" class="label">sharepointr</text>
+  <text x="470" y="68" class="sub">sp_upload_file()</text>
+  <text x="470" y="86" class="sub">sp_download_file()</text>
+  <text x="470" y="112" class="sub">graph: PUT /content or</text>
+  <text x="470" y="128" class="sub">createUploadSession (&gt;4MB)</text>
+  <text x="470" y="150" class="sub">rest: POST Files/Add(...)</text>
+  <text x="470" y="166" class="sub">GET .../Files('x')/$value</text>
+
+  <rect x="710" y="65" width="180" height="90" rx="12" class="box" />
+  <text x="800" y="100" class="label">Document library</text>
+  <text x="800" y="122" class="sub">Shared Documents/...</text>
+
+  <path d="M190 92 C270 92 280 92 358 92" class="edge" marker-end="url(#arrow-ud)" />
+  <text x="275" y="78" class="edge-label">upload</text>
+
+  <path d="M358 128 C280 128 270 128 190 128" class="edge" marker-end="url(#arrow-ud)" />
+  <text x="275" y="146" class="edge-label">download</text>
+
+  <path d="M580 92 C650 92 660 92 708 92" class="edge" marker-end="url(#arrow-ud)" />
+  <text x="645" y="78" class="edge-label">upload</text>
+
+  <path d="M708 128 C660 128 650 128 580 128" class="edge" marker-end="url(#arrow-ud)" />
+  <text x="645" y="146" class="edge-label">download</text>
+</svg>

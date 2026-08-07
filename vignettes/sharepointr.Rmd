@@ -1,0 +1,185 @@
+---
+title: "Getting started with sharepointr"
+author: "Esben Eickhardt"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting started with sharepointr}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
+```
+
+## Introduction
+
+`sharepointr` uploads, downloads, lists, and manages files on SharePoint
+document libraries from R. Build one `auth` object with `sharepoint_auth()`,
+then pass it to every other function.
+
+Three authentication methods are supported — pick based on how you'll run
+the script:
+
+| Method | Setup | Needs admin? | Unattended? | Backend |
+|---|---|---|---|---|
+| Cookie (`fedauth`/`rtfa`) | Copy two values from your browser | No | No | REST only |
+| Client secret | Entra ID app registration + secret | Yes, once | Yes | Graph or REST |
+| Certificate | Entra ID app registration + certificate | Yes, once | Yes | Graph or REST |
+
+## Option 1: Cookie authentication
+
+This reuses your own already-signed-in SharePoint browser session — no app
+registration, no admin. Best for interactive or one-off scripts; not
+suited to unattended jobs, since the cookies expire on your tenant's normal
+sign-in-frequency schedule and there's no way to refresh them without
+signing in again.
+
+1. Sign in to your SharePoint site in a browser as you normally would.
+2. Open developer tools (F12) > **Application** (Chrome/Edge) or
+   **Storage** (Firefox) > **Cookies** > your SharePoint domain.
+3. Copy the values of the `FedAuth` and `rtFa` cookies.
+
+```{r}
+library(sharepointr)
+
+auth <- sharepoint_auth(
+  site_url = "https://contoso.sharepoint.com/sites/MySite",
+  fedauth  = Sys.getenv("SHAREPOINT_FEDAUTH"),
+  rtfa     = Sys.getenv("SHAREPOINT_RTFA")
+)
+```
+
+Treat these values like a password — anyone with them can act as you on
+this site until they expire. Store them as environment variables (as
+above) or in a secrets manager, never hardcoded in a script.
+
+This method always uses the SharePoint REST API (`backend = "rest"` is
+implied); Microsoft Graph has no concept of cookie authentication.
+
+## Option 2/3: App registration (client secret or certificate)
+
+For scheduled jobs, pipelines, or anything that needs to run without you
+present, authenticate as an Entra ID app registration instead.
+
+### Create the app registration
+
+1. Go to the [Entra admin center](https://entra.microsoft.com) →
+   **Identity → Applications → App registrations → New registration**.
+   Give it any name — this is a headless, app-only integration, so the
+   redirect URI and account type settings don't matter much.
+2. Note the **Application (client) ID** and **Directory (tenant) ID** shown
+   on the registration's overview page.
+
+### Add a credential
+
+**Client secret** — under **Certificates & secrets → Client secrets → New
+client secret**. Copy the secret's **value** immediately, it's only shown
+once. Secrets expire (up to 2 years) and need manual rotation.
+
+**Certificate** — under **Certificates & secrets → Certificates → Upload
+certificate**, upload the **public key** of a certificate you generate:
+
+```bash
+openssl req -x509 -newkey rsa:2048 -keyout key.pem -out cert.pem -days 730 -nodes -subj "/CN=sharepointr"
+cat key.pem cert.pem > combined.pem   # what certificate_path points at
+```
+
+Upload `cert.pem` to Entra ID; keep `combined.pem` (private key + cert)
+somewhere safe and out of version control.
+
+### Grant API permissions
+
+Under **API permissions → Add a permission**, choose **Application
+permissions** (not delegated — there's no signed-in user in this flow):
+
+- **Graph backend** (recommended): `Microsoft Graph` → `Sites.Selected`
+  (access granted per-site, see below) or `Sites.ReadWrite.All` (every
+  site in the tenant).
+- **REST backend**: `SharePoint` → `Sites.FullControl.All`, or a narrower
+  permission your tenant admin has defined.
+
+Click **Grant admin consent for {tenant}**.
+
+If you used `Sites.Selected`, also grant the app access to your *specific*
+site: tenant-wide consent alone isn't enough. Do this with the
+[Graph site permissions API](https://learn.microsoft.com/graph/api/site-post-permissions)
+or PnP PowerShell's `Grant-PnPAzureADAppSitePermission`. Skipping this step
+is the most common cause of a 403 on your first real call.
+
+### Authenticate from R
+
+```{r}
+# Client secret
+auth <- sharepoint_auth(
+  site_url      = "https://contoso.sharepoint.com/sites/MySite",
+  tenant_id     = "contoso.onmicrosoft.com",
+  client_id     = Sys.getenv("SHAREPOINT_CLIENT_ID"),
+  client_secret = Sys.getenv("SHAREPOINT_CLIENT_SECRET")
+)
+
+# Certificate, equivalently
+auth <- sharepoint_auth(
+  site_url              = "https://contoso.sharepoint.com/sites/MySite",
+  tenant_id             = "contoso.onmicrosoft.com",
+  client_id             = Sys.getenv("SHAREPOINT_CLIENT_ID"),
+  certificate_path      = "combined.pem",
+  certificate_password  = Sys.getenv("SHAREPOINT_CERT_PASSWORD") # only if the key is encrypted
+)
+```
+
+Add `backend = "rest"` to either call to use the classic SharePoint REST
+API instead of Graph.
+
+## Listing, uploading, downloading, and managing files
+
+Paths are library-relative — they include the document library name (most
+often `"Shared Documents"`) but not the site URL, which `auth` already
+knows. This is the same regardless of which authentication method you used.
+
+```{r}
+# List everything in a folder
+sp_list_items(auth, "Shared Documents")
+#>          name   type size            modified
+#> 1     Reports folder   NA 2026-01-01 09:00:00
+#> 2 Welcome.docx   file 8213 2025-11-03 14:22:10
+
+sp_list_files(auth, "Shared Documents")
+sp_list_folders(auth, "Shared Documents")
+
+# Upload
+sp_upload_file(auth, "report.xlsx", "Shared Documents/Reports/report.xlsx")
+
+# Download (dest controls the local file name)
+sp_download_file(auth, "Shared Documents/Reports/report.xlsx", "report.xlsx")
+sp_download_file(
+  auth, "Shared Documents/Reports/report.xlsx",
+  dest = "downloads/renamed.xlsx"
+)
+
+# Manage
+sp_create_folder(auth, "Shared Documents/Reports/2026")
+sp_file_exists(auth, "Shared Documents/Reports/2026/report.xlsx")
+sp_delete_item(auth, "Shared Documents/Reports/2026/report.xlsx")
+```
+
+Files larger than 4MB are uploaded via a chunked, resumable upload session
+automatically when using the Graph backend — no different call needed.
+
+Deleted items go to the site recycle bin, not permanently deleted.
+
+## Troubleshooting
+
+- **"Failed to parse SharePoint's response as JSON" / mentions "expired"**
+  (cookie auth) — your `fedauth`/`rtfa` cookies have expired. Sign in to
+  SharePoint in your browser again and copy fresh values.
+- **403 Forbidden** (app registration auth) — almost always a missing
+  admin consent step, or (with `Sites.Selected`) a missing per-site grant.
+- **Token requests failing** (app registration auth) — double check
+  `tenant_id` is the *directory* ID (a GUID) or a verified domain like
+  `contoso.onmicrosoft.com`, not the SharePoint site URL.
+- **"Could not find a document library named ..."** (Graph backend) — the
+  first path segment must match the library as SharePoint shows it in the
+  browser, e.g. `"Shared Documents"`, not the underlying Graph drive name
+  (`"Documents"`).

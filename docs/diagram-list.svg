@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 220" font-family="-apple-system,Segoe UI,Helvetica,Arial,sans-serif">
+  <defs>
+    <marker id="arrow-ls" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" class="arrow-fill" />
+    </marker>
+  </defs>
+  <style>
+    .box { fill: #eef4fc; stroke: #0f6cbd; stroke-width: 1.5; }
+    .box-alt { fill: #eafcfb; stroke: #0f9b8e; stroke-width: 1.5; }
+    .label { fill: #1b1f2a; font-size: 16px; font-weight: 600; text-anchor: middle; }
+    .sub { fill: #46505c; font-size: 12.5px; text-anchor: middle; }
+    .mono { fill: #46505c; font-size: 12px; text-anchor: middle; font-family: ui-monospace,SFMono-Regular,Menlo,monospace; }
+    .edge { stroke: #6b7684; stroke-width: 2; fill: none; }
+    .edge-label { fill: #46505c; font-size: 12px; text-anchor: middle; }
+    .arrow-fill { fill: #6b7684; }
+    @media (prefers-color-scheme: dark) {
+      .box { fill: #12263b; stroke: #50e6ff; }
+      .box-alt { fill: #0f2b28; stroke: #3ddbc9; }
+      .label { fill: #e6e8f0; }
+      .sub { fill: #aab2bf; }
+      .mono { fill: #aab2bf; }
+      .edge { stroke: #8892a0; }
+      .edge-label { fill: #aab2bf; }
+      .arrow-fill { fill: #8892a0; }
+    }
+  </style>
+
+  <rect x="20" y="60" width="220" height="100" rx="12" class="box-alt" />
+  <text x="130" y="98" class="label">sp_list_items()</text>
+  <text x="130" y="120" class="sub">graph: GET .../children</text>
+  <text x="130" y="138" class="sub">rest: GET .../Files + /Folders</text>
+
+  <rect x="340" y="60" width="220" height="100" rx="12" class="box" />
+  <text x="450" y="98" class="label">SharePoint</text>
+  <text x="450" y="120" class="sub">document library</text>
+  <text x="450" y="138" class="sub">folder contents</text>
+
+  <rect x="660" y="60" width="220" height="100" rx="12" class="box-alt" />
+  <text x="770" y="92" class="label">data.frame</text>
+  <text x="770" y="114" class="mono">name  type  size  modified</text>
+  <text x="770" y="132" class="mono">A.txt file  1234  2026-01-01</text>
+  <text x="770" y="148" class="mono">Sub   folder  NA  2026-01-02</text>
+
+  <line x1="240" y1="95" x2="335" y2="95" class="edge" marker-end="url(#arrow-ls)" />
+  <text x="288" y="82" class="edge-label">request</text>
+
+  <line x1="335" y1="130" x2="240" y2="130" class="edge" marker-end="url(#arrow-ls)" />
+  <text x="288" y="148" class="edge-label">JSON</text>
+
+  <line x1="560" y1="95" x2="655" y2="95" class="edge" marker-end="url(#arrow-ls)" />
+  <text x="608" y="82" class="edge-label">request</text>
+
+  <line x1="655" y1="130" x2="560" y2="130" class="edge" marker-end="url(#arrow-ls)" />
+  <text x="608" y="148" class="edge-label">JSON</text>
+</svg>

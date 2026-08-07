@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 320" font-family="-apple-system,Segoe UI,Helvetica,Arial,sans-serif">
+  <defs>
+    <marker id="arrow-auth" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" class="arrow-fill" />
+    </marker>
+  </defs>
+  <style>
+    .box { fill: #eef4fc; stroke: #0f6cbd; stroke-width: 1.5; }
+    .box-alt { fill: #eafcfb; stroke: #0f9b8e; stroke-width: 1.5; }
+    .label { fill: #1b1f2a; font-size: 16px; font-weight: 600; text-anchor: middle; }
+    .sub { fill: #46505c; font-size: 12.5px; text-anchor: middle; }
+    .edge { stroke: #6b7684; stroke-width: 2; fill: none; }
+    .edge-label { fill: #46505c; font-size: 12px; text-anchor: middle; }
+    .arrow-fill { fill: #6b7684; }
+    @media (prefers-color-scheme: dark) {
+      .box { fill: #12263b; stroke: #50e6ff; }
+      .box-alt { fill: #0f2b28; stroke: #3ddbc9; }
+      .label { fill: #e6e8f0; }
+      .sub { fill: #aab2bf; }
+      .edge { stroke: #8892a0; }
+      .edge-label { fill: #aab2bf; }
+      .arrow-fill { fill: #8892a0; }
+    }
+  </style>
+
+  <!-- Cookie path -->
+  <rect x="10" y="20" width="220" height="80" rx="12" class="box" />
+  <text x="120" y="55" class="label">Browser sign-in</text>
+  <text x="120" y="75" class="sub">copy FedAuth + rtFa cookies</text>
+
+  <line x1="230" y1="60" x2="330" y2="60" class="edge" marker-end="url(#arrow-auth)" />
+  <text x="280" y="47" class="edge-label">paste</text>
+
+  <rect x="335" y="20" width="210" height="80" rx="12" class="box-alt" />
+  <text x="440" y="55" class="label">Cookie header</text>
+  <text x="440" y="75" class="sub">REST backend only</text>
+
+  <!-- OAuth path -->
+  <rect x="10" y="140" width="190" height="80" rx="12" class="box" />
+  <text x="105" y="170" class="label">App registration</text>
+  <text x="105" y="190" class="sub">client_id + secret/cert</text>
+
+  <line x1="200" y1="180" x2="290" y2="180" class="edge" marker-end="url(#arrow-auth)" />
+  <text x="245" y="167" class="edge-label">POST</text>
+
+  <rect x="295" y="140" width="230" height="80" rx="12" class="box" />
+  <text x="410" y="170" class="label">Entra ID</text>
+  <text x="410" y="190" class="sub">oauth2/v2.0/token</text>
+
+  <line x1="525" y1="180" x2="600" y2="180" class="edge" marker-end="url(#arrow-auth)" />
+  <text x="562" y="167" class="edge-label">200 OK</text>
+
+  <rect x="605" y="140" width="180" height="80" rx="12" class="box-alt" />
+  <text x="695" y="170" class="label">Bearer token</text>
+  <text x="695" y="190" class="sub">Graph or REST</text>
+
+  <!-- converge -->
+  <line x1="440" y1="100" x2="440" y2="260" class="edge" marker-end="url(#arrow-auth)" />
+  <line x1="695" y1="220" x2="695" y2="248" class="edge" />
+  <line x1="440" y1="248" x2="695" y2="248" class="edge" marker-end="url(#arrow-auth)" />
+
+  <rect x="335" y="255" width="310" height="50" rx="10" class="box" />
+  <text x="490" y="285" class="label" style="font-size:14px">sharepointr -&gt; SharePoint API call</text>
+</svg>

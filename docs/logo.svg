@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 96" fill="none">
+  <defs>
+    <linearGradient id="mark" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0f6cbd" />
+      <stop offset="1" stop-color="#50e6ff" />
+    </linearGradient>
+  </defs>
+  <style>
+    .logo-text { fill: #1b1f2a; }
+    @media (prefers-color-scheme: dark) {
+      .logo-text { fill: #e6e8f0; }
+    }
+  </style>
+  <rect x="0" y="8" width="80" height="80" rx="20" fill="url(#mark)" />
+  <path d="M40 26 V70 M28 38 40 26 52 38 M28 58 40 70 52 58"
+        stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" />
+  <text x="98" y="60" font-family="-apple-system,Segoe UI,Helvetica,Arial,sans-serif"
+        font-size="38" font-weight="800" class="logo-text" letter-spacing="-1">sharepointr</text>
+</svg>

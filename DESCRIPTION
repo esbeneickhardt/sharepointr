@@ -1,21 +1,33 @@
 Package: sharepointr
-Title: sharepointr: Upload and Download files from SharePoint
-Version: 0.0.0.1
-Authors@R: 
+Title: Upload, Download, and List Files on SharePoint
+Version: 1.0.0
+Authors@R:
     person(given = "Esben",
            family = "Eickhardt",
            role = c("aut", "cre"),
            email = "esbeneickhardt@gmail.com")
-Description: sharepointr: Upload and Download files from SharePoint
+Description: Provides a simple interface for uploading, downloading, listing,
+    and deleting files on SharePoint document libraries. Authenticates as an
+    Entra ID (Azure AD) app registration using the OAuth2 client credentials
+    flow (client secret or certificate), talking to either the Microsoft
+    Graph API or the SharePoint REST API.
+License: MIT + file LICENSE
 Encoding: UTF-8
-LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
-Suggests: knitr, rmarkdown, formatR
+URL: https://github.com/esbeneickhardt/sharepointr
+BugReports: https://github.com/esbeneickhardt/sharepointr/issues
+Depends:
+    R (>= 4.1)
+Imports:
+    httr2 (>= 1.0.0),
+    jose,
+    openssl,
+    utils
+Suggests:
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0),
+    withr
 VignetteBuilder: knitr
-Imports: 
-    httr,
-    jsonlite,
-    utils,
-    purrr,
-    stringr
+Config/testthat/edition: 3
+Config/roxygen2/version: 8.1.0
